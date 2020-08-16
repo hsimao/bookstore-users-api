@@ -19,8 +19,8 @@ func CreateUser(user users.User) (*users.User, *errors.RestErr) {
 		return nil, err
 	}
 
-	if err := user.Save(); err != nil {
-		return nil, err
+	if saveErr := user.Save(); saveErr != nil {
+		return nil, saveErr
 	}
 
 	return &user, nil
@@ -62,4 +62,9 @@ func UpdateUser(isPartial bool, user users.User) (*users.User, *errors.RestErr) 
 func DeleteUser(userId int64) *errors.RestErr {
 	user := &users.User{Id: userId}
 	return user.Delete()
+}
+
+func Search(status string) ([]users.User, *errors.RestErr) {
+	dao := &users.User{}
+	return dao.FindByStatus(status)
 }
